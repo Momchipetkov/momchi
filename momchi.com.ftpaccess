@@ -1,0 +1,17 @@
+<Limit ALL>
+        Deny ALL
+        Allow 10.10.10.102
+        Allow 10.10.10.103
+        Allow 10.10.10.104
+        Allow 10.10.10.105
+        Allow 10.10.10.106
+        Allow 10.10.10.107
+        Allow 10.10.10.110
+        Allow 10.10.10.11
+        Allow 10.10.10.1
+        Allow 122.2.3.2
+        Allow 127.0.0.1
+        Allow 87.120.40.5
+        Allow 87.120.40.52
+        Allow 2.2.2.2
+</Limit>
