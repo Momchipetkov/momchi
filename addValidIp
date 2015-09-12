@@ -5,7 +5,7 @@ import re
 import os.path
 import ipaddress
 
-ftp_access_file = "e-mursha.com.ftpaccess"
+ftp_access_file = "momchi.com.ftpaccess"
 
 def check_ftp_access_file(fName):
         if os.path.isfile(fName):
