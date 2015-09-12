@@ -1,0 +1,85 @@
+#!/usr/local/bin/python
+import socket
+import sys
+import re
+import os.path
+import ipaddress
+
+ftp_access_file = "e-mursha.com.ftpaccess"
+
+def check_ftp_access_file(fName):
+        if os.path.isfile(fName):
+                return True
+        return False
+
+def collect_ips():
+
+        if check_ftp_access_file(ftp_access_file):
+                check =""
+                f = open(ftp_access_file, 'r')
+                for ip in f:
+                        check += ip
+                f.close()
+                ips = re.findall("Allow\s(\S+)",check)
+                if len(ips) >= 1:
+                        return  ips
+
+                return []
+        else:
+                return "Mising file"
+
+
+def validIP(ip):
+    try:
+        ipaddress.ip_address(str(ip).decode('utf-8'))
+        return True
+    except:
+        return False
+
+
+def overWrite(new):
+       f = open(ftp_access_file,'w')
+       f.write("<Limit ALL>\n\tDeny ALL\n")
+       for i in new:
+               f.write('\tAllow ' + str(i) + '\n')
+       f.write("</Limit>")
+       f.close()
+
+
+def add_new_ip(ip):
+        if validIP(ip):
+                ips = collect_ips()
+                if len(ips)>=1:
+                        if ip not in ips:
+                                ips.append(str(ip))
+                        overWrite(ips)
+                else:
+                        return False
+        else:
+                return "invalid ip address"
+
+
+def rm_ip(ip):
+        if validIP(ip):
+                ips = collect_ips()
+                print ips
+                if len(ips)>=1:
+                        if ip in ips:
+                                ips.remove(ip)
+                        else:
+                                return "No such ip in the data"
+                        overWrite(ips)
+                else:
+                        return "no ips"
+        else:
+                return "invalid ip address"
+
+if len(sys.argv) < 3:
+        print "missing arguments"
+else:
+        if sys.argv[1] == 'add':
+                print add_new_ip(sys.argv[2])
+        elif sys.argv[1] == 'rm':
+                print rm_ip(sys.argv[2])
+        else:
+                print "unknown argument"
